@@ -1,0 +1,23 @@
+{
+  "name": "rss-reader",
+  "version": "1.0.0",
+  "description": "My_project",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DenisKalyanov/Project_RSS_Reader.git"
+  },
+  "author": "Denis Kalyanov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DenisKalyanov/Project_RSS_Reader/issues"
+  },
+  "homepage": "https://github.com/DenisKalyanov/Project_RSS_Reader#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
