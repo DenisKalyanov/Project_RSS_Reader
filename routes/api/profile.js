@@ -3,8 +3,8 @@ const router = express.Router();
 
 // Drscriptions
 // @route GET api/profile
-// @
-// access Private
+// @desc Test route
+// access Public
 
 router.get("/", (req, res) => {
   res.send("Profile route");

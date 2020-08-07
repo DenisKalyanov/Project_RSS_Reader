@@ -9,7 +9,7 @@ app.get("/", (req, res) => {
   res.send("Server is running, display in your browser");
 });
 
-app.use("/api/auth", require("./routes/api/auth"));
+app.use("/api/auth", require("./routes/api/auth")); // 1 - in browser, 2 in backEnd
 app.use("/api/posts", require("./routes/api/posts"));
 app.use("/api/profile", require("./routes/api/profile"));
 app.use("/api/users", require("./routes/api/users"));

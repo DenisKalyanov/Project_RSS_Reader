@@ -3,7 +3,7 @@ const router = express.Router();
 
 // Drscriptions
 // @route GET api/users
-// @
+// @desc Test route
 // access Public
 
 router.get("/", (req, res) => {
