@@ -36,11 +36,11 @@ const validateLoginData = (email, password) => {
   const passwordValidate = passwordSchema.validate(password);
 
   if (emailValidate.error) {
-    errors.email = emailValidate.error.details[0].message.replace("value", "Email");
+    errors.email = emailValidate.error.details[0].message.replace('"value"', "Email");
   }
 
   if (passwordValidate.error) {
-    errors.password = passwordValidate.error.details[0].message.replace("value", "Password");
+    errors.password = passwordValidate.error.details[0].message.replace('"value"', "Password");
   }
 
   return errors;

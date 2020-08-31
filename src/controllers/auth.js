@@ -6,8 +6,22 @@ const { validateRegisterData, validateLoginData } = require("../utils/validation
 const { BadRequest } = require("../utils/errors");
 const BaseResponse = require("../utils/BaseResponse");
 
-async function login(req, res, next) {
+async function login(req, res) {
   const { email, password } = req.body;
+
+  const errors = validateLoginData(email, password);
+
+  if (!isEmpty(errors)) {
+    console.log(errors);
+    throw new BadRequest("Register validation failed", errors);
+  }
+
+  const token = await authService.login({ email, password });
+
+  const baseResponse = new BaseResponse("User logged in successfully", 201);
+
+  res.cookie("token", token, { maxAge: config.get("expiresIn"), httpOnly: true });
+  res.status(baseResponse.statusCode).json(baseResponse);
 }
 
 async function register(req, res) {
