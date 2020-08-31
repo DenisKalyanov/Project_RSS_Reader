@@ -4,7 +4,7 @@ const userNameSchema = Joi.string().min(2).max(20).required();
 
 const emailSchema = Joi.string().required().email().max(64);
 
-const passwordSchema = Joi.string().required().min(8).max(32);
+const passwordSchema = Joi.string().required().min(6).max(32);
 
 const validateRegisterData = (userName, email, password) => {
   const errors = {};
@@ -12,7 +12,8 @@ const validateRegisterData = (userName, email, password) => {
   const userNameValidate = userNameSchema.validate(userName);
   const emailValidate = emailSchema.validate(email);
   const passwordValidate = passwordSchema.validate(password);
-  console.log(passwordValidate.error.details);
+  // console.log(passwordValidate.error.details);
+
   if (userNameValidate.error) {
     errors.name = userNameValidate.error.details[0].message.replace('"value"', "Name");
   }

@@ -1,24 +1,30 @@
 const isEmpty = require("lodash/isEmpty");
+const config = require("config");
 
 const authService = require("../services/auth");
 const { validateRegisterData, validateLoginData } = require("../utils/validation/auth");
+const { BadRequest } = require("../utils/errors");
+const BaseResponse = require("../utils/BaseResponse");
 
-async function login(req, res, next) {}
+async function login(req, res, next) {
+  const { email, password } = req.body;
+}
 
-async function register(req, res, next) {
+async function register(req, res) {
   const { name, email, password } = req.body;
 
   const errors = validateRegisterData(name, email, password);
 
   if (!isEmpty(errors)) {
-    return res.status(400).json(errors);
+    throw new BadRequest("Register validation failed", errors);
   }
 
-  res.json({'msg': 'everything is okay'});
+  const token = await authService.register({ name, email, password });
 
-  // validateRegisterData
-  // const token = await authService.register();
-  // res.json(token);
+  const baseResponse = new BaseResponse("User successfully registered", 201);
+
+  res.cookie("token", token, { maxAge: config.get("expiresIn"), httpOnly: true });
+  res.status(baseResponse.statusCode).json(baseResponse);
 }
 
 module.exports = {
