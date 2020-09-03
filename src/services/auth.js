@@ -27,7 +27,6 @@ async function login({ email, password }) {
   };
 
   const token = createToken(payload);
-  console.log(token);
   return token;
 }
 

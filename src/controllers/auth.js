@@ -8,6 +8,7 @@ const BaseResponse = require("../utils/BaseResponse");
 
 async function login(req, res) {
   const { email, password } = req.body;
+  console.log(req.headers.cookie);
 
   const errors = validateLoginData(email, password);
 
@@ -22,6 +23,7 @@ async function login(req, res) {
 
   res.cookie("token", token, { maxAge: config.get("expiresIn"), httpOnly: true });
   res.status(baseResponse.statusCode).json(baseResponse);
+
 }
 
 async function register(req, res) {
