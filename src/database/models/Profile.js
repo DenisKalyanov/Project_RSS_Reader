@@ -13,10 +13,6 @@ const Profiles = new mongoose.Schema({
     type: String,
     required: true
   },
-  wasBorn: {
-    type: Date,
-    required: true
-  },
   mobilePhone: {
     type: String
   },
