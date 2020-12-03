@@ -1,28 +1,25 @@
 const isEmpty = require("lodash/isEmpty");
-const mongoose = require("mongoose");
-const Profile = require("../database/models/Profile");
 
-const { decodeToken } = require("../utils/jwt/index");
+const profileService = require("../services/profile");
 const validateProfileData = require("../utils/validation/profile");
 const BaseResponse = require("../utils/BaseResponse");
-const createUserProfile = require("../services/profile");
+const { BadRequest } = require("../utils/errors");
 
 async function createProfile(req, res) {
-  try {
-    const { firstName, lastName, mobilePhone, location, preferNews } = req.body;
-    const errors = await validateProfileData(firstName, lastName, mobilePhone, location, preferNews);
+  const { firstName, lastName, mobilePhone, location, preferNews } = req.body;
 
-    if (!(Object.keys(errors).length === 0)) {
-      return res.send(errors);
-    }
+  const errors = await validateProfileData(firstName, lastName, mobilePhone, location, preferNews);
 
-    const profile = new Profile(createUserProfile(req, res));
-    await profile.save();
-    res.send(profile);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server error");
+  if (!isEmpty(errors)) {
+    throw new BadRequest("Profile validation failed", errors);
   }
+
+  const profile = await profileService.createProfile(req.user.id, req.body);
+
+  const baseResponse = new BaseResponse("Profile was successfully updated", 200, profile);
+  res.status(baseResponse.statusCode).json(baseResponse);
 }
 
-module.exports = createProfile;
+module.exports = {
+  createProfile
+};

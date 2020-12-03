@@ -1,18 +1,25 @@
 const Profile = require("../database/models/Profile");
-const { decodeToken } = require("../utils/jwt/index");
 
-function createUserProfile(req, res) {
-  const profileFields = {};
-  profileFields.user = decodeToken(req, res);
-  const { firstName, lastName, mobilePhone, location, preferNews } = req.body;
-  if (firstName) profileFields.firstName = firstName;
-  if (lastName) profileFields.lastName = lastName;
-  if (mobilePhone) profileFields.mobilePhone = mobilePhone;
-  if (location) profileFields.location = location;
-  if (preferNews) {
-    profileFields.preferNews = preferNews.split(",").map((news) => news.trim());
+const { configureProfile } = require("../helpers/profile");
+
+async function createProfile(user, profileData) {
+  console.log(profileData);
+  let profile = await Profile.findOne({ user });
+
+  if (profile) {
+    console.log("changed");
+    profile = await Profile.findOneAndUpdate({ user }, { $set: configureProfile(user, profileData) }, { new: true });
+
+    return profile;
   }
-  return profileFields;
+  console.log("new profile");
+  profile = new Profile(configureProfile(user, profileData));
+
+  await profile.save();
+
+  return profile;
 }
 
-module.exports = createUserProfile;
+module.exports = {
+  createProfile
+};

@@ -23,7 +23,6 @@ async function login(req, res) {
 
   res.cookie("token", token, { maxAge: config.get("expiresIn"), httpOnly: true });
   res.status(baseResponse.statusCode).json(baseResponse);
-
 }
 
 async function register(req, res) {
